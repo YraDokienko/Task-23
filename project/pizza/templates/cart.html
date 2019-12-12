@@ -1,0 +1,45 @@
+{% extends "index.html"  %}
+{% block application %}
+
+<h1>cart</h1>
+{% for pizza in order.pizzas.all %}
+<div class=" row p-2 mb-2 bg-white text-dark border border-secondary" >
+    <div class="col-lg-3 col-sm-3 col-xs-12" style="height: 100px; line-height: 100px;">
+        <img  src="{{pizza.pizza_template.image.url}}" style="width: 100px; height: 100px;" />
+    </div>
+    <div  class="col-lg-3 col-sm-3 col-xs-12 mob-fix" style="height: 100px; line-height: 100px;">
+        {{pizza.name}}
+    </div>
+    <div class="col-lg-2 col-sm-2 col-xs-12 mob-fix" style="height: 100px; line-height: 100px;">
+        {{pizza.price}}
+    </div>
+    <div class="col-lg-1 col-sm-2 col-xs-12 mob-fix" style="height: 100px; line-height: 100px;">
+        {{pizza.count}}
+    </div>
+    <div class="col-lg-3 col-sm-2 col-xs-12 mob-fix" style="height: 100px; line-height: 100px;">
+        <form action="/cart/" method="post">
+             <div class="form-group mr-sm-2">
+                 <input name="pizza_id" value="{{pizza.id}}" hidden>
+                 <input class="btn btn-success" type="submit" value="Удалить">
+                  <a href="/del_instance/{{pizza.id}}"> - edit </a>
+             </div>
+        </form>
+    </div>
+  </div>
+{% endfor %}
+<hr>
+<div style="height: 5px; text-align: right;">
+	<div style="width: 40%; float: right;">
+        <div class="form-group mr-sm-1">
+            <form action="shipping/"  class="form-inline">
+                <a> <h5 class="text-danger">СУММА заказа = {{ order.full_price }} грн.
+                    <button class="btn btn-success"> Оформить заказ </button></h5>
+                </a>
+            </form>
+        </div>
+
+
+<!--	<button class="btn-success">Оформить заказ</button></a>-->
+	</div>
+</div>
+{% endblock%}
