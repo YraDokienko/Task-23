@@ -6,7 +6,8 @@ from .models import Pizza, ShippingOrder
 class PizzaForm(ModelForm):
     class Meta:
         model = Pizza
-        fields = ['name', 'price', 'size', 'description', 'available', 'ingredient']
+        fields = ['name', 'price', 'size', 'description', 'available',
+                  'ingredient']
 
 
 class PizzaPriceUpdateForm(forms.Form):
@@ -19,16 +20,20 @@ class PizzaPriceUpdateForm(forms.Form):
 
 
 class PizzaSortedForm(forms.Form):
-    sort_order = forms.ChoiceField(label='Сортировка', required=False, choices=[
-        ['name', 'по алфавиту'],
-        ['price', 'цена по возрастанию'],
-        ['-price', 'цена по убыванию'],
-    ])
+    sort_order = forms.ChoiceField(
+        label='Сортировка',
+        required=False,
+        choices=[
+            ['name', 'по алфавиту'],
+            ['price', 'цена по возрастанию'],
+            ['-price', 'цена по убыванию'],
+        ])
 
 
 class AddPizzaToOrderForm(forms.Form):
     count = forms.IntegerField()
     pizza_id = forms.IntegerField()
+
 
 class ShippingOrderForm(ModelForm):
     apartment = forms.CharField(required=False)
@@ -39,9 +44,9 @@ class ShippingOrderForm(ModelForm):
         ['cash', 'Наличными при получении'],
         ['card', 'Оплата картой']
     ])
+
     class Meta:
         model = ShippingOrder
-        fields = ['first_name', 'last_name', 'email', 'phone','city', 'street', 'house', 'apartment', 'front_door',
+        fields = ['first_name', 'last_name', 'email', 'phone', 'city',
+                  'street', 'house', 'apartment', 'front_door',
                   'floor', 'number_persons', 'type_payment', 'comment', ]
-
-

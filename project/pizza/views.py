@@ -1,4 +1,5 @@
-from .forms import PizzaForm, PizzaPriceUpdateForm, PizzaSortedForm, AddPizzaToOrderForm, ShippingOrderForm
+from .forms import PizzaForm, PizzaPriceUpdateForm, PizzaSortedForm, \
+    AddPizzaToOrderForm, ShippingOrderForm
 from django.views.generic import ListView, FormView, UpdateView, TemplateView
 from django.http import HttpResponseRedirect
 from .models import Pizza, Order, InstancePizza
@@ -9,13 +10,13 @@ class PizzaHomeView(ListView):
     template_name = 'home.html'
 
     def get_queryset(self):
-        sort = self.request.GET.get('sort_order','name')
+        sort = self.request.GET.get('sort_order', 'name')
         return Pizza.objects.all().order_by(sort)
 
     def get_context_data(self,  *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['data'] = Pizza.objects.all().count()
-        context['list'] = Pizza.objects.values_list('name', flat = True)
+        context['list'] = Pizza.objects.values_list('name', flat=True)
         context['form'] = PizzaSortedForm
         context['order'] = Order.objects.first()
         return context
@@ -62,7 +63,7 @@ class AddPizzaToOrderView(FormView):
             order = Order.objects.create()
 
         pizza_id = form.cleaned_data.get('pizza_id')
-        instance_pizza = InstancePizza.objects.filter(pizza_template = pizza_id)
+        instance_pizza = InstancePizza.objects.filter(pizza_template=pizza_id)
 
         if instance_pizza:
             print('ТАКАЯ ПИЦА ЕСТЬ')
@@ -100,7 +101,7 @@ class PizzaCartView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PizzaCartView, self).get_context_data(**kwargs)
-        context['order']= Order.objects.first()
+        context['order'] = Order.objects.first()
         return context
 
 
@@ -115,5 +116,5 @@ class ShippingOrderView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(ShippingOrderView, self).get_context_data(**kwargs)
-        context['order'] =Order.objects.first()
+        context['order'] = Order.objects.first()
         return context

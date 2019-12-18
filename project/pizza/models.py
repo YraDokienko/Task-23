@@ -20,7 +20,7 @@ class Ingredient(models.Model):
         return self.name
 
     class Meta:
-        verbose_name ='Ингредиент'
+        verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
         ordering = ['name']
 
@@ -36,7 +36,7 @@ class Pizza(models.Model):
     price = models.DecimalField('Цена', max_digits=7, decimal_places=2, default=0)
     ingredient = models.ManyToManyField(Ingredient, verbose_name='Ингридиенты')
     description = models.CharField('Описание', max_length=300)
-    image = models.ImageField(upload_to = image_folder)
+    image = models.ImageField(upload_to=image_folder)
     slug = models.SlugField()
     available = models.BooleanField('Наличие', default=True)
 
@@ -59,7 +59,7 @@ class InstancePizza(models.Model):
 
 class Order(models.Model):
     pizzas = models.ManyToManyField(InstancePizza, blank=True)
-    full_price = models.DecimalField(max_digits=12, decimal_places=2, default=0, )
+    full_price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
     def save_full_price(self):
         pizzas = self.pizzas.all()
@@ -71,14 +71,14 @@ class Order(models.Model):
 
 
 class ShippingOrder(models.Model):
-    first_name = models.CharField('Имя', max_length= 50)
+    first_name = models.CharField('Имя', max_length=50)
     last_name = models.CharField('Фамилия', max_length=50)
     email = models.EmailField('Email', )
     phone = models.IntegerField('Телефон', blank=False)
     city = models.CharField('Город', max_length=100, default='Одесса')
     street = models.CharField('Улица', max_length=200)
     house = models.CharField('Дом', max_length=50)
-    apartment = models.CharField('Квартира', max_length = 20, blank=False)
+    apartment = models.CharField('Квартира', max_length=20, blank=False)
     front_door = models.PositiveIntegerField('Парадная', blank=False, null=True)
     floor = models.IntegerField('Этаж', blank=False, null=True)
     number_persons = models.PositiveIntegerField('Кол-во персон:', default=1)
