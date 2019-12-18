@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Size(models.Model):
+class Size(models.Model):  #  Модель для размера ПИЦЦ
     name = models.CharField(max_length=40)
 
     def __str__(self):
@@ -12,7 +12,7 @@ class Size(models.Model):
         verbose_name_plural = 'Размеры'
 
 
-class Ingredient(models.Model):
+class Ingredient(models.Model):  #  Модель ингридиентов пицц
     name = models.CharField(max_length=40)
     price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
 
@@ -30,7 +30,7 @@ def image_folder(instance, filename):
     return "{0}/{1}".format(instance.slug, filename)
 
 
-class Pizza(models.Model):
+class Pizza(models.Model):   #  Модель ПИЦЦА
     name = models.CharField('Название', max_length=40)
     size = models.ForeignKey(Size, on_delete=models.CASCADE, verbose_name='Размер')
     price = models.DecimalField('Цена', max_digits=7, decimal_places=2, default=0)
@@ -49,7 +49,7 @@ class Pizza(models.Model):
         ordering = ['name']
 
 
-class InstancePizza(models.Model):
+class InstancePizza(models.Model):  #  Модель создания копии ИНСТАНС ПИЦЦА
     name = models.CharField('Название', max_length=40)
     size = models.ForeignKey(Size, on_delete=models.CASCADE, verbose_name='Размер')
     price = models.DecimalField('Цена', max_digits=7, decimal_places=2, default=0)
@@ -57,11 +57,9 @@ class InstancePizza(models.Model):
     pizza_template = models.ForeignKey(Pizza, on_delete=models.CASCADE)
 
 
-
-
-class Order(models.Model):
+class Order(models.Model):  # Модель создания ОРДЕРА
     pizzas = models.ManyToManyField(InstancePizza, blank=True)
-    full_price = models.DecimalField(max_digits=7, decimal_places=2, default=0, )
+    full_price = models.DecimalField(max_digits=12, decimal_places=2, default=0, )
 
     def save_full_price(self):
         pizzas = self.pizzas.all()
@@ -72,7 +70,7 @@ class Order(models.Model):
         self.save()
 
 
-class ShippingOrder(models.Model):
+class ShippingOrder(models.Model):     #   Модель ШИПИНГ формы
     first_name = models.CharField('Имя', max_length=50)
     last_name = models.CharField('Фамилия', max_length=50)
     email = models.EmailField('Email', )
@@ -81,8 +79,8 @@ class ShippingOrder(models.Model):
     street = models.CharField('Улица', max_length=200)
     house = models.CharField('Дом', max_length=50)
     apartment = models.CharField('Квартира', max_length=20, blank=False)
-    front_door = models.PositiveIntegerField('Парадная',)
-    floor = models.IntegerField('Этаж', blank=False)
+    front_door = models.PositiveIntegerField('Парадная', blank=False, null=True)
+    floor = models.IntegerField('Этаж', blank=False, null=True)
     number_persons = models.PositiveIntegerField('Кол-во персон:', default=1)
     comment = models.CharField('Комментарий', max_length=300, blank=False)
     type_payment = models.CharField('Способ оплаты', max_length=100)

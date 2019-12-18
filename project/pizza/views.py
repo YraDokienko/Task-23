@@ -5,19 +5,9 @@ from django.template import  RequestContext
 from .models import Pizza, Order, InstancePizza
 
 
-
-class PizzaHomeView(ListView):
+class PizzaHomeView(ListView):  #  Представление для отображения списка ПИЦЦ
     model = Pizza
     template_name = 'home.html'
-
-    def get_client_ip(request):
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
-        else:
-            ip = request.META.get('REMOTE_ADDR')
-        return ip
-
 
     def get_queryset(self):
         sort = self.request.GET.get('sort_order', 'name')
@@ -29,13 +19,10 @@ class PizzaHomeView(ListView):
         context['list'] = Pizza.objects.values_list('name', flat=True)
         context['form'] = PizzaSortedForm
         context['order'] = Order.objects.first()
-        # context['ip'] = PizzaHomeView.get_client_ip(*)
         return context
 
 
-
-
-class PizzaFormAddView(FormView):
+class PizzaFormAddView(FormView):  #  Представление для добавления новой пиццы
     template_name = 'form_pizza_add.html'
     form_class = PizzaForm
     success_url = '/'
@@ -45,14 +32,14 @@ class PizzaFormAddView(FormView):
         return super().form_valid(form)
 
 
-class PizzaUpdateView(UpdateView):
+class PizzaUpdateView(UpdateView):  #  Представление для обдейта существующих ПИЦЦЦ
     form_class = PizzaForm
     model = Pizza
     template_name = 'form_pizza_add.html'
     success_url = '/'
 
 
-class PizzaPriceUpdateView(FormView):
+class PizzaPriceUpdateView(FormView):  # ПРЕДСТАВЛЕНИЕ Для общего изменения цены пицц
     template_name = 'pizza_price_update.html'
     form_class = PizzaPriceUpdateForm
     success_url = '/'
@@ -66,7 +53,7 @@ class PizzaPriceUpdateView(FormView):
         return super().form_valid(form)
 
 
-class AddPizzaToOrder(FormView):
+class AddPizzaToOrder(FormView):  #  Добовление пиицы в карзину
     form_class = AddPizzaToOrderForm
     success_url = '/'
 
@@ -84,7 +71,6 @@ class AddPizzaToOrder(FormView):
             count = form.cleaned_data.get('count')
             instance_pizza.count += count
             instance_pizza.save()
-            order.save_full_price()
 
         else:
             count = form.cleaned_data.get('count')
@@ -99,12 +85,14 @@ class AddPizzaToOrder(FormView):
             )
 
             order.pizzas.add(instance_pizza)
-            order.save_full_price()
+        order.save_full_price()
         return super().form_valid(form)
 
-    def del_instance(self, id):
+    def del_instance(self, id):   #  функция удаления пицц из корзины
+        order = Order.objects.first()
         instance = InstancePizza.objects.get(id=id)
         instance.delete()
+        order.save_full_price()
         return HttpResponseRedirect("/cart")
 
 
@@ -117,7 +105,7 @@ class PizzaCartView(TemplateView):
         return context
 
 
-class ShippingOrderView(FormView):
+class ShippingOrderView(FormView):   #  Модель представления  ШИПЕНГ формы
     template_name = 'shipping_form.html'
     form_class = ShippingOrderForm
     success_url = '/'

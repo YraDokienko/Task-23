@@ -20,26 +20,24 @@
         <form action="/cart/" method="post">
              <div class="form-group mr-sm-2">
                  <input name="pizza_id" value="{{pizza.id}}" hidden>
-                 <input class="btn btn-success" type="submit" value="Удалить">
-                  <a href="/del_instance/{{pizza.id}}"> - edit </a>
+                  <a href="/del_instance/{{pizza.id}}" class="btn btn-danger btn-sm" role="button"> удалить </a>
              </div>
         </form>
     </div>
   </div>
 {% endfor %}
-<hr>
-<div style="height: 5px; text-align: right;">
-	<div style="width: 40%; float: right;">
-        <div class="form-group mr-sm-1">
-            <form action="shipping/"  class="form-inline">
-                <a> <h5 class="text-danger">СУММА заказа = {{ order.full_price }} грн.
-                    <button class="btn btn-success"> Оформить заказ </button></h5>
-                </a>
-            </form>
-        </div>
+<hr class="mb-4">
+ <div class="col-md-12">
+     <form action="shipping/">
+         <div class="row">
+         <div class="col-md-6">
+             <button class="btn btn-success"> Оформить заказ </button>
+         </div>
+         <div class="col-md-6">
+             <h5 class="text-danger">СУММА = {{ order.full_price }} грн.</h5>
+         </div>
+         </div>
+     </form>
+ </div>
 
-
-<!--	<button class="btn-success">Оформить заказ</button></a>-->
-	</div>
-</div>
 {% endblock%}

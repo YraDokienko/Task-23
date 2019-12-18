@@ -3,13 +3,13 @@ from django import forms
 from .models import Pizza, ShippingOrder
 
 
-class PizzaForm(ModelForm):
+class PizzaForm(ModelForm): # ФОрма для добовления новой пиццы
     class Meta:
         model = Pizza
         fields = ['name', 'price', 'size', 'description', 'available', 'ingredient']
 
 
-class PizzaPriceUpdateForm(forms.Form):
+class PizzaPriceUpdateForm(forms.Form):  #  Форма для апдейта пицц
     value = forms.DecimalField(max_digits=7, decimal_places=2)
 
     def create_object(self):
@@ -18,7 +18,7 @@ class PizzaPriceUpdateForm(forms.Form):
         )
 
 
-class PizzaSortedForm(forms.Form):
+class PizzaSortedForm(forms.Form):  #  Форма для сортировки
     sort_order = forms.ChoiceField(label='Сортировка', required=False, choices=[
         ['name', 'по алфавиту'],
         ['price', 'цена по возрастанию'],
@@ -26,13 +26,16 @@ class PizzaSortedForm(forms.Form):
     ])
 
 
-class AddPizzaToOrderForm(forms.Form):
+class AddPizzaToOrderForm(forms.Form):  #  Форма для добовления ПИЦЦЫ в ОРДЕР
     count = forms.IntegerField()
     pizza_id = forms.IntegerField()
 
 
-class ShippingOrderForm(ModelForm):
-
+class ShippingOrderForm(ModelForm):  #  ШИПИНГ форма
+    apartment = forms.CharField(required=False)
+    front_door = forms.ImageField(required=False)
+    floor = forms.ImageField(required=False)
+    comment = forms.CharField(required=False)
     type_payment = forms.ChoiceField(required=False, choices=[
         ['cash', 'Наличными при получении'],
         ['card', 'Оплата картой']
