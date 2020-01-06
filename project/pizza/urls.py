@@ -1,11 +1,12 @@
 from django.urls import path
 from django.views.generic import TemplateView
+from django.views.decorators.cache import cache_page
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('', views.PizzaHomeView.as_view(), name='home'),
+    path('', cache_page(60*1)(views.PizzaHomeView.as_view()), name='home'),
     path('pizza-form-add/', views.PizzaFormAddView.as_view(), name='pizza_add'),
     path('cart/', views.PizzaCartView.as_view(), name='cart'),
     path('stop_spam_page/', TemplateView.as_view(template_name='stop_spam_page.html')),
