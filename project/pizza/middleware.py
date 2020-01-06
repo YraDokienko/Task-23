@@ -1,5 +1,6 @@
 from django.utils.deprecation import MiddlewareMixin
 from django.contrib.auth import logout
+from .clientip import list_ip
 import time
 
 TIMEOUT = 30
@@ -8,6 +9,8 @@ TIMEOUT = 30
 class UserDisconnectionTimeMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
+
+        list_ip(request)
         user_activity_time = request.session.get('user_activity_time')
         time_now = time.time()
 
